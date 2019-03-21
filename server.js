@@ -3,7 +3,7 @@ const path = require('path');
 const { launch, connect } = require('hadouken-js-adapter');
 
 const serverParams = {
-    root: path.resolve('public'),
+    root: path.resolve('./'),
     port: 5555,
     open: false,
     logLevel: 2
