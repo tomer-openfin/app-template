@@ -1,4 +1,4 @@
-const liveServer = require('live-server');
+const httpServer = require('http-server');
 const path = require('path');
 const { launch, connect } = require('hadouken-js-adapter');
 
@@ -13,8 +13,11 @@ const serverParams = {
 const manifestUrl = `http://localhost:${serverParams.port}/app.json`;
 
 //Start the server server
-liveServer.start(serverParams).on('listening', async () => {
+const server = httpServer.createServer(serverParams);
+server.listen(serverParams.port);
+(async() => {
     try {
+        console.log(manifestUrl);
         //Once the server is running we can launch OpenFin and retrieve the port.
         const port = await launch({ manifestUrl });
 
@@ -30,4 +33,4 @@ liveServer.start(serverParams).on('listening', async () => {
     } catch (err) {
         console.error(err);
     }
-});
+})();
