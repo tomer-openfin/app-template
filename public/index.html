@@ -10,14 +10,156 @@
 </head>
 
 <body>
-    <div>
-        <h1>Hello, world!</h1>
-        <p>This is a template for an OpenFin application.</p>
-        <p id="version-number-container">
-            Current version: <span id="of-version"></span>
-        </p>
+    <style type="text/css">
+        @font-face {
+            font-family: AkkuratPro;
+            font-weight: normal;
+            font-style: normal;
+            src: url("https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/AkkuratPro/AkkRg_Pro_1.otf") format("opentype");
+        }
+    
+        @font-face {
+            font-family: AkkuratProBold;
+            font-weight: bold;
+            font-style: normal;
+            src: url("https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/AkkuratPro/AkkBd_Pro_1.otf") format("opentype");
+        }
+    
+        @font-face {
+            font-family: AkkuratProLight;
+            font-weight: lighter;
+            font-style: normal;
+            src: url("https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/AkkuratPro/AkkLg_Pro_1.otf") format("opentype");
+        }
+    
+        .openfin-top-bar {
+            font-family: 'AkkuratPro', arial, sans-serif;
+            z-index: 999999999;
+            position: absolute;
+            height: 35px;
+            top: 0;
+            left: 0;
+    
+            background: #1C1C31;
+            display: flex;
+            align-items: center;
+            -webkit-app-region: drag;
+            width: 100%;
+    
+            color: #FFFFFF;
+    
+            ;
+            text-align: center;
+            overflow: hidden;
+            vertical-align: middle;
+            line-height: 35px;
+            margin: 0 auto;
+            letter-spacing: 2px;
+            font-size: 10px;
+        }
+    
+        body {
+            background: #1c1c31
+        }
+    
+        .openfin-top-bar-drag {
+            margin: 0 auto;
+        }
+    
+        .openfin-top-bar-title {
+            opacity: 0.4;
+        }
+    
+        .openfin-top-bar-close-x {
+            -webkit-app-region: no-drag;
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            top: 7px;
+            right: 7px;
+            padding: 5px;
+            opacity: 0.9;
+            z-index: 1000;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+    
+        .openfin-top-bar-close-x:hover {
+            background-color: #0077cc;
+            opacity: 1;
+            border-radius: 3px;
+        }
+    
+        .openfin-top-bar-close-x:active {
+            background: #014f86;
+        }
+    
+        .openfin-top-bar-maximize {
+            -webkit-app-region: no-drag;
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            top: 7px;
+            right: 29px;
+            padding: 5px;
+            opacity: 0.9;
+            z-index: 1000;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+    
+        .openfin-top-bar-maximize:hover {
+            -webkit-app-region: no-drag;
+            background-color: #0077cc;
+            opacity: 1;
+            border-radius: 3px;
+        }
+    
+        .openfin-top-bar-maximize:active {
+            background: #014f86;
+        }
+    
+        .openfin-top-bar-minimize {
+            -webkit-app-region: no-drag;
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            top: 7px;
+            right: 51px;
+            padding: 5px;
+            opacity: 0.9;
+            z-index: 1000;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+    
+        .openfin-top-bar-minimize:hover {
+            background-color: #0077cc;
+            opacity: 1;
+            border-radius: 3px;
+        }
+    
+        .openfin-top-bar-minimize:active {
+            background: #014f86;
+        }
+    
+        body {
+            padding-top: 35px;
+        }
+    </style>
+    
+    <div class="openfin-top-bar">
+        <div class="openfin-top-bar-drag">
+            <span class="openfin-top-bar-title">Loading<span>...</span></span>
+        </div>
+        <img class="openfin-top-bar-minimize"
+            src="https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/top-bar-images/minimize.svg" alt="">
+        <img class="openfin-top-bar-maximize"
+            src="https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/top-bar-images/maximize.svg" alt="">
+        <img class="openfin-top-bar-close-x"
+            src="https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/top-bar-images/close-x.svg" alt="">
     </div>
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

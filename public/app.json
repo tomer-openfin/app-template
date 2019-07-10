@@ -5,11 +5,14 @@
         "uuid": "OpenfinPOC",
         "applicationIcon": "http://localhost:5555/favicon.ico",
         "autoShow": true,
-        "saveWindowState": true
+        "saveWindowState": false,
+        "backgroundColor": "#1c1c31",
+        "frame": false,
+        "waitForPageLoad": false
     },
     "runtime": {
-        "arguments": "",
-        "version": "stable"
+        "arguments": "--enable-mesh --security-realm=realm --v=1",
+        "version": "12.69.43.15"
     },
     "shortcut": {
         "company": "OpenFin",
