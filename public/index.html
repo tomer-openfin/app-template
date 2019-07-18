@@ -17,21 +17,21 @@
             font-style: normal;
             src: url("https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/AkkuratPro/AkkRg_Pro_1.otf") format("opentype");
         }
-    
+
         @font-face {
             font-family: AkkuratProBold;
             font-weight: bold;
             font-style: normal;
             src: url("https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/AkkuratPro/AkkBd_Pro_1.otf") format("opentype");
         }
-    
+
         @font-face {
             font-family: AkkuratProLight;
             font-weight: lighter;
             font-style: normal;
             src: url("https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/AkkuratPro/AkkLg_Pro_1.otf") format("opentype");
         }
-    
+
         .openfin-top-bar {
             font-family: 'AkkuratPro', arial, sans-serif;
             z-index: 999999999;
@@ -39,15 +39,15 @@
             height: 35px;
             top: 0;
             left: 0;
-    
+
             background: #1C1C31;
             display: flex;
             align-items: center;
             -webkit-app-region: drag;
             width: 100%;
-    
+
             color: #FFFFFF;
-    
+
             ;
             text-align: center;
             overflow: hidden;
@@ -57,19 +57,23 @@
             letter-spacing: 2px;
             font-size: 10px;
         }
-    
+
         body {
             background: #1c1c31
         }
-    
+
+        html {
+            height: 100%; /* Required for empty Divs */
+        }
+
         .openfin-top-bar-drag {
             margin: 0 auto;
         }
-    
+
         .openfin-top-bar-title {
             opacity: 0.4;
         }
-    
+
         .openfin-top-bar-close-x {
             -webkit-app-region: no-drag;
             position: absolute;
@@ -83,17 +87,17 @@
             cursor: pointer;
             box-sizing: border-box;
         }
-    
+
         .openfin-top-bar-close-x:hover {
             background-color: #0077cc;
             opacity: 1;
             border-radius: 3px;
         }
-    
+
         .openfin-top-bar-close-x:active {
             background: #014f86;
         }
-    
+
         .openfin-top-bar-maximize {
             -webkit-app-region: no-drag;
             position: absolute;
@@ -107,18 +111,18 @@
             cursor: pointer;
             box-sizing: border-box;
         }
-    
+
         .openfin-top-bar-maximize:hover {
             -webkit-app-region: no-drag;
             background-color: #0077cc;
             opacity: 1;
             border-radius: 3px;
         }
-    
+
         .openfin-top-bar-maximize:active {
             background: #014f86;
         }
-    
+
         .openfin-top-bar-minimize {
             -webkit-app-region: no-drag;
             position: absolute;
@@ -132,22 +136,38 @@
             cursor: pointer;
             box-sizing: border-box;
         }
-    
+
         .openfin-top-bar-minimize:hover {
             background-color: #0077cc;
             opacity: 1;
             border-radius: 3px;
         }
-    
+
         .openfin-top-bar-minimize:active {
             background: #014f86;
+            padding-bottom: 15px;
         }
-    
+
         body {
             padding-top: 35px;
+            height: 100%; /* Required for empty Divs */
+        }
+        div#bv-container {
+            margin: 0px auto;
+            width: 99%;
+            border: 1px solid red;
+            float: left;
+            display: block;
+            height: 90%;
+        }
+        .lm_goldenlayout {
+            padding-top:5%;
         }
     </style>
-    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="//golden-layout.com/assets/js/goldenlayout.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-base.css" />
+    <link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-dark-theme.css" />
     <div class="openfin-top-bar">
         <div class="openfin-top-bar-drag">
             <span class="openfin-top-bar-title">Loading<span>...</span></span>
@@ -157,7 +177,7 @@
         <img class="openfin-top-bar-maximize"
             src="https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/top-bar-images/maximize.svg" alt="">
         <img class="openfin-top-bar-close-x"
-            src="https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/top-bar-images/close-x.svg" alt="">
+             src="https://cdn.openfin.co/demos/whiteboard/apps/shared/libs/top-bar/top-bar-images/close-x.svg" alt="">
     </div>
     <script type="module" src="js/main.js"></script>
 </body>
