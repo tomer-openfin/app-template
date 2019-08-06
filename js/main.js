@@ -52,8 +52,8 @@ class goldenLayouts extends HTMLElement {
         this.save = this.save.bind(this);
         this.restore = this.restore.bind(this);
         this.restoreDefault = this.restoreDefault.bind(this);
+        this.getStorageKey = this.getStorageKey.bind(this);
         this.layout = null;
-        this.storageKey = 'of-gl-state';
 
         this.defaultConfig = {
             content: [{
@@ -121,6 +121,12 @@ class goldenLayouts extends HTMLElement {
         this.render();
     }
 
+    getStorageKey() {
+        const identity = fin.Window.getCurrentSync().identity;
+
+        return encodeURI(`${identity.uuid}-${identity.name}-of-gl-state`);
+    }
+
     async render() {
         const info = html`
         <div>
@@ -135,14 +141,14 @@ class goldenLayouts extends HTMLElement {
     async save() {
         if (this.layout) {
             const state = JSON.stringify(this.layout.toConfig());
-            localStorage.setItem(this.storageKey, state);
+            localStorage.setItem(this.getStorageKey(), state);
             console.log('Layout state saved');
         }
     }
 
     //TODO: figure out how to iterate over a saved layout to get the browser view information.
     async restore() {
-        const savedState = localStorage.getItem(this.storageKey);
+        const savedState = localStorage.getItem(this.getStorageKey());
 
         if (this.layout) {
             this.layout.destroy();
@@ -169,7 +175,7 @@ class goldenLayouts extends HTMLElement {
     }
 
     async restoreDefault() {
-        localStorage.removeItem(this.storageKey);
+        localStorage.removeItem(this.getStorageKey());
         this.restore();
     }
 }
