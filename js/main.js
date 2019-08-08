@@ -70,7 +70,7 @@ class goldenLayouts extends HTMLElement {
                                 uuid:'whatever',
                                 name: 'component_B'
                             },
-                            url: 'http://duckduckgo.com'
+                            url: 'https://duckduckgo.com'
                         }
                     },{
                         type: 'component',
@@ -82,7 +82,7 @@ class goldenLayouts extends HTMLElement {
                                 uuid:'whatever',
                                 name: 'component_C'
                             },
-                            url: 'http://google.com'
+                            url: 'https://apple.com'
                         }
                     }]},{
                         type: 'column',
@@ -96,7 +96,7 @@ class goldenLayouts extends HTMLElement {
                                     uuid:'whatever',
                                     name: 'component_A'
                                 },
-                                url: 'http://bing.com'
+                                url: 'https://bing.com'
                             }
                         },{
                             type: 'component',
@@ -108,7 +108,7 @@ class goldenLayouts extends HTMLElement {
                                     uuid:'whatever',
                                     name: 'component_D'
                                 },
-                                url: 'http://openfin.co'
+                                url: 'https://openfin.co'
                             }
                         }]
                     }]
@@ -147,7 +147,7 @@ class goldenLayouts extends HTMLElement {
     }
 
     //TODO: figure out how to iterate over a saved layout to get the browser view information.
-    async restore() {
+    restore() {
         const savedState = localStorage.getItem(this.getStorageKey());
 
         if (this.layout) {
@@ -159,24 +159,111 @@ class goldenLayouts extends HTMLElement {
         } else {
             this.layout = new GoldenLayout(this.defaultConfig);
         }
-        this.layout.registerComponent( 'browserView', function( container, componentState ){
-            container.getElement().html( '<h2>' + componentState.label + '</h2>' );
-            return componentState;
-        });
+
 
         //this.layout.
+        this.layout.registerComponent( 'browserView', function( container, componentState ){
+            return { componentState, container };
+        });
 
         this.layout.init();
-        const browserViews = this.layout.root.getComponentsByName('browserView');
-        //TODO: Tomer to integrate BV stuff.
-        console.log(browserViews);
 
-        window.myLayout = this.layout;
+        const browserViews = this.layout.root.getComponentsByName('browserView');
+        browserViews.forEach(bv => {
+            const rView = new ResizableView(bv.componentState);
+            rView.renderIntoComponent(bv);
+        });
     }
 
     async restoreDefault() {
         localStorage.removeItem(this.getStorageKey());
         this.restore();
+    }
+}
+
+async function createOpenFinView(options) {
+    const { identity } =  fin.Window.getCurrentSync();
+    Object.assign({
+        uuid: identity.uuid,
+        autoResize: {
+            width: false,
+            height: false
+        },
+        target: identity
+    }, options);
+
+    const view  = fin.BrowserView.create(options);
+}
+
+class ResizableView {
+    constructor(options) {
+        const currWin =  fin.Window.getCurrentSync();
+        console.log(currWin);
+        const identity = { uuid: currWin.identity.uuid, name: options.identity.name };
+        console.log(identity);
+        this.options = {
+            autoResize: {
+                width: false,
+                height: false
+            },
+            uuid: identity.uuid,
+            name: identity.name,
+            url: options.url,
+            target: currWin.identity,
+            bounds: {
+                x: 1,
+                y: 1,
+                width: 0,
+                height: 0
+            }
+        };
+        console.log(this.options);
+        this.componentKey = `bv-container${ identity.uuid }-${ identity.name }`;
+        const resizeObserver = new ResizeObserver( entries => {
+            if (this.view) {
+                for (let entry of entries) {
+                    const cr = entry.contentRect;
+                    console.log('Element:', entry.target);
+                    console.log(`Element size: ${cr.width}px x ${cr.height}px`);
+                    console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
+
+                    var rect = entry.target.getBoundingClientRect();
+                    console.log(rect.top, rect.right, rect.bottom, rect.left);
+                    // height
+                    // width
+                    // top
+                    // left
+                    // right
+                    // bottom
+                    this.view.setBounds({
+                        height: Math.floor(cr.height),
+                        width: Math.floor(cr.width),
+                        y: Math.floor(rect.top),
+                        x: Math.floor(rect.left),
+                        right: Math.floor(rect.right),
+                        bottom: Math.floor(rect.bottom)
+                    }).catch(console.error).then(() => console.log('did it'));
+                }
+            }
+        });
+
+        this.resizeObserver = resizeObserver;
+        this.renderIntoComponent = this.renderIntoComponent.bind(this);
+    }
+
+    async renderIntoComponent(opts) {
+        try {
+            this.view = await fin.BrowserView.create(this.options);
+            const { container, componentState } = opts;
+            const element = $(`<div class="bv-container" id="${this.componentKey}"></div>`);
+            // container.getElement().html( `<h2> ${componentState.label} - ${ this.componentKey }</h2>`);
+            container.getElement().append(element);
+            const bvContainer = document.querySelector(`#${this.componentKey}`);
+
+            this.resizeObserver.observe(bvContainer);
+        } catch (err) {
+            console.error(err);
+        }
     }
 }
 
