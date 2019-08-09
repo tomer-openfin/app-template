@@ -1,5 +1,6 @@
 import { html, render } from '../node_modules/lit-html/lit-html.js';
 import {defaultConfig, popoutIcon} from './constants.js';
+import WindowWithViews from '../public/js/window.js';
 //register service worker
 //navigator.serviceWorker.register('../serviceworker.js');
 
@@ -90,7 +91,7 @@ class goldenLayouts extends HTMLElement {
         popoutButton.append(popoutIcon.clone());
         popoutButton.click(() => {
             const view = tab.contentItem.container.getState().identity;
-            fin.InterApplicationBus.send({uuid:'*'}, 'tearout', {views: [view]});
+            new WindowWithViews(defaultConfig, [view]);
             tab.contentItem.container.close(view);
         });
         tab.element.append(popoutButton);

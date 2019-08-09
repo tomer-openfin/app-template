@@ -1,8 +1,8 @@
-class WindowWithViews {
+export default class WindowWithViews {
     idCounter = 0; //hack
 
     constructor(config, views) { 
-        const configWithDefaults = Object.assign({}, genDefaultConfig(), config);
+        const configWithDefaults = Object.assign({}, this.genDefaultConfig(), config);
         const win = fin.Window.create(configWithDefaults);
         
         views.forEach((id) => {
@@ -12,7 +12,7 @@ class WindowWithViews {
     }
 
     genDefaultConfig = () => ({
-        "name": genId(),
+        "name": this.genId(),
         "url": "https://www.bing.com",
         "uuid": "OpenfinPOC",
         "applicationIcon": "http://localhost:5555/favicon.ico",
@@ -22,7 +22,7 @@ class WindowWithViews {
         "waitForPageLoad": false
       });
       
-      genId = () => `OpenfinPOC${idCounter++}`
+      genId = () => `OpenfinPOC${this.idCounter++}`
 
 }
 
