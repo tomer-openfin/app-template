@@ -1,11 +1,17 @@
 class WindowWithViews {
     idCounter = 0; //hack
 
-    constructor() {
-        fin.Window.create();
+    constructor(config, views) { 
+        const configWithDefaults = Object.assign({}, genDefaultConfig(), config);
+        const win = fin.Window.create(configWithDefaults);
+        
+        views.forEach((id) => {
+            const view = fin.BrowserView.wrapSync(id)
+            view.attach(win.identity);
+        })
     }
 
-    genConfig = () => ({
+    genDefaultConfig = () => ({
         "name": genId(),
         "url": "https://www.bing.com",
         "uuid": "OpenfinPOC",
