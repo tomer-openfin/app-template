@@ -98,7 +98,7 @@ class goldenLayouts extends HTMLElement {
         tab.element.append(popoutButton);
         dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener))
     }
-    
+
     onItemDestroyed(e) {
         setTimeout(() => {
             if(e.componentName === 'browserView') {
@@ -132,14 +132,14 @@ class goldenLayouts extends HTMLElement {
         });
     }
     async render() {
-        const info = html`
-        <div>
-            <button @click=${this.save}>Save Layout</button>
-            <button @click=${this.restore}>Restore Layout</button>
-            <button @click=${this.restoreDefault}>Restore Default Layout</button>
-        </div>
-        `;
-        render(info, this);
+        // const info = html`
+        // <div>
+        //     <button @click=${this.save}>Save Layout</button>
+        //     <button @click=${this.restore}>Restore Layout</button>
+        //     <button @click=${this.restoreDefault}>Restore Default Layout</button>
+        // </div>
+        // `;
+        // render(info, this);
     }
 
     async save() {
@@ -251,12 +251,12 @@ class ResizableView {
         try {
             this.view = await fin.BrowserView.create(this.options);
             const { container, componentState } = opts;
-            const element = $(`<div class="bv-container" id="${this.componentKey}"></div>`);
-            // container.getElement().html( `<h2> ${componentState.label} - ${ this.componentKey }</h2>`);
-            container.getElement().append(element);
-            const bvContainer = document.querySelector(`#${this.componentKey}`);
+            // const element = $(`<div class="bv-container" id="${this.componentKey}"></div>`);
+            // // container.getElement().html( `<h2> ${componentState.label} - ${ this.componentKey }</h2>`);
+            // container.getElement().append(element);
+            // const bvContainer = document.querySelector(`#${this.componentKey}`);
 
-            this.resizeObserver.observe(bvContainer);
+            this.resizeObserver.observe(container.getElement()[0]);
         } catch (err) {
             console.error(err);
         }
