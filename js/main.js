@@ -77,9 +77,9 @@ class goldenLayouts extends HTMLElement {
     }
 
     setupListeners() {
-        this.layout.on('stackCreated', this.onStackCreated);
-        this.layout.on('tabCreated', this.onTabCreated);
-        this.layout.on('itemDestroyed', this.onItemDestroyed);
+        this.layout.on('stackCreated', this.onStackCreated.bind(this));
+        this.layout.on('tabCreated', this.onTabCreated.bind(this));
+        this.layout.on('itemDestroyed', this.onItemDestroyed.bind(this));
     }
 
     onStackCreated() {/*todo*/}
@@ -98,7 +98,17 @@ class goldenLayouts extends HTMLElement {
         dragListener.on('drag', () => this.onTabDrag(tab))
     }
     
-    onItemDestroyed() {/*todo*/}
+    onItemDestroyed(e) {
+        setTimeout(() => {
+            if(e.componentName === 'browserView') {
+                const viewCount = this.layout.root.getComponentsByName('browserView').length;
+                if(viewCount === 0) {
+                    const currWin =  fin.Window.getCurrentSync();
+                    currWin.close().catch(console.error);
+                }
+            }
+        }, 0);
+    }
     onTabDrag(tab) {
         if(!this.isDragging) {
             this.isDragging = true;
