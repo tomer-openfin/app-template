@@ -55,6 +55,7 @@ class goldenLayouts extends HTMLElement {
         this.restoreDefault = this.restoreDefault.bind(this);
         this.getStorageKey = this.getStorageKey.bind(this);
         this.layout = null;
+        this.isDragging = false;
 
         this.defaultConfig = defaultConfig;
 
@@ -95,7 +96,7 @@ class goldenLayouts extends HTMLElement {
             tab.contentItem.container.close(view);
         });
         tab.element.append(popoutButton);
-        dragListener.on('drag', () => this.onTabDrag(tab))
+        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener))
     }
     
     onItemDestroyed(e) {
@@ -109,18 +110,17 @@ class goldenLayouts extends HTMLElement {
             }
         }, 0);
     }
-    onTabDrag(tab) {
+    onTabDrag(dragListener) {
         if(!this.isDragging) {
             this.isDragging = true;
 
-            let Allviews = this.layout.root.getComponentsByName('browserView').map(item => item.container.getState().identity);
-            Allviews = [...Allviews, tab.contentItem.config.componentState.identity] //adding currently dragged view (since it's not currently in the dom)
-            Allviews.forEach(view => fin.BrowserView.wrapSync(view).hide());
+            const Allviews = this.layout.root.getComponentsByName('browserView').map(item => item.container.getState().identity);
 
-            listener.on('dragStop', function onDragEnd(e) {
+            Allviews.forEach(view => fin.BrowserView.wrapSync(view).hide());
+            dragListener.on('dragStop', function onDragEnd(e) {
                 this.isDragging = false;
                 Allviews.forEach(view => fin.BrowserView.wrapSync(view).show());
-                listener.off('dragStop', onDragEnd);
+                dragListener.off('dragStop', onDragEnd);
             });
         }
     }

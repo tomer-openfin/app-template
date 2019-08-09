@@ -18,7 +18,7 @@ export default class WindowWithViews {
         "applicationIcon": "http://localhost:5555/favicon.ico",
         "autoShow": true,
         "saveWindowState": false,
-        "frame": false,
+        "frame": true,
         "waitForPageLoad": false
       });
       
