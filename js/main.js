@@ -1,5 +1,6 @@
 import { html, render } from '../node_modules/lit-html/lit-html.js';
-
+import {defaultConfig, popoutIcon} from './constants.js';
+import WindowWithViews from '../public/js/window.js';
 //register service worker
 //navigator.serviceWorker.register('../serviceworker.js');
 
@@ -54,69 +55,18 @@ class goldenLayouts extends HTMLElement {
         this.restoreDefault = this.restoreDefault.bind(this);
         this.getStorageKey = this.getStorageKey.bind(this);
         this.layout = null;
+        this.isDragging = false;
 
-        this.defaultConfig = {
-            content: [{
-                type: 'row',
-                content:[{
-                    type: 'column',
-                    content:[{
-                        type: 'component',
-                        componentName: 'browserView',
-                        componentState: {
-                            label: 'B',
-                            title: 'component_B',
-                            identity: {
-                                uuid:'whatever',
-                                name: 'component_B'
-                            },
-                            url: 'https://duckduckgo.com'
-                        }
-                    },{
-                        type: 'component',
-                        componentName: 'browserView',
-                        componentState: {
-                            label: 'C',
-                            title: 'component_C',
-                            identity: {
-                                uuid:'whatever',
-                                name: 'component_C'
-                            },
-                            url: 'https://apple.com'
-                        }
-                    }]},{
-                        type: 'column',
-                        content: [{
-                            type: 'component',
-                            componentName: 'browserView',
-                            componentState: {
-                                label: 'A',
-                                title: 'component_A',
-                                identity: {
-                                    uuid:'whatever',
-                                    name: 'component_A'
-                                },
-                                url: 'https://bing.com'
-                            }
-                        },{
-                            type: 'component',
-                            componentName: 'browserView',
-                            componentState: {
-                                label: 'D',
-                                title: 'component_D',
-                                identity: {
-                                    uuid:'whatever',
-                                    name: 'component_D'
-                                },
-                                url: 'https://openfin.co'
-                            }
-                        }]
-                    }]
-            }]
-        };
+        this.defaultConfig = defaultConfig;
 
         //Restore the layout.
         this.restore();
+
+        this.setupListeners();
+
+        this.layout.init();
+        this.attachViews();
+
         //Then we render.
         this.render();
     }
@@ -127,6 +77,60 @@ class goldenLayouts extends HTMLElement {
         return encodeURI(`${identity.uuid}-${identity.name}-of-gl-state`);
     }
 
+    setupListeners() {
+        this.layout.on('stackCreated', this.onStackCreated.bind(this));
+        this.layout.on('tabCreated', this.onTabCreated.bind(this));
+        this.layout.on('itemDestroyed', this.onItemDestroyed.bind(this));
+    }
+
+    onStackCreated() {/*todo*/}
+    onTabCreated(tab) {
+        this.isDragging = false;
+        const dragListener = tab._dragListener;
+        const id = tab.contentItem.config.componentState.identity.name;
+        const popoutButton = $(`<div class="popout-button" id="popout-${id}"></div>`);
+        popoutButton.append(popoutIcon.clone());
+        popoutButton.click(() => {
+            const view = tab.contentItem.container.getState().identity;
+            new WindowWithViews(defaultConfig, [view]);
+            tab.contentItem.container.close(view);
+        });
+        tab.element.append(popoutButton);
+        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener))
+    }
+    
+    onItemDestroyed(e) {
+        setTimeout(() => {
+            if(e.componentName === 'browserView') {
+                const viewCount = this.layout.root.getComponentsByName('browserView').length;
+                if(viewCount === 0) {
+                    const currWin =  fin.Window.getCurrentSync();
+                    currWin.close().catch(console.error);
+                }
+            }
+        }, 0);
+    }
+    onTabDrag(dragListener) {
+        if(!this.isDragging) {
+            this.isDragging = true;
+
+            const Allviews = this.layout.root.getComponentsByName('browserView').map(item => item.container.getState().identity);
+
+            Allviews.forEach(view => fin.BrowserView.wrapSync(view).hide());
+            dragListener.on('dragStop', function onDragEnd(e) {
+                this.isDragging = false;
+                Allviews.forEach(view => fin.BrowserView.wrapSync(view).show());
+                dragListener.off('dragStop', onDragEnd);
+            });
+        }
+    }
+    attachViews() {
+        const browserViews = this.layout.root.getComponentsByName('browserView');
+        browserViews.forEach(bv => {
+            const rView = new ResizableView(bv.componentState);
+            rView.renderIntoComponent(bv);
+        });
+    }
     async render() {
         const info = html`
         <div>
@@ -164,14 +168,6 @@ class goldenLayouts extends HTMLElement {
         //this.layout.
         this.layout.registerComponent( 'browserView', function( container, componentState ){
             return { componentState, container };
-        });
-
-        this.layout.init();
-
-        const browserViews = this.layout.root.getComponentsByName('browserView');
-        browserViews.forEach(bv => {
-            const rView = new ResizableView(bv.componentState);
-            rView.renderIntoComponent(bv);
         });
     }
 
