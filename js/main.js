@@ -203,7 +203,8 @@ class ResizableView {
                 y: 1,
                 width: 0,
                 height: 0
-            }
+            },
+            showDevTools: options.showDevTools
         };
         console.log(this.options);
         this.componentKey = `bv-container${ identity.uuid }-${ identity.name }`;

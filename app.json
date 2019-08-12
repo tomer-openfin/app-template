@@ -22,10 +22,11 @@
                                         "label": "B",
                                         "title": "component_B",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_B"
                                         },
-                                        "url": "https://duckduckgo.com"
+                                        "showDevTools": true,
+                                        "url": "http://localhost:5555/view-form.html"
                                     }
                                 },
                                 {
@@ -35,7 +36,7 @@
                                         "label": "C",
                                         "title": "component_C",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_C"
                                         },
                                         "url": "https://apple.com"
@@ -50,23 +51,10 @@
                                     "type": "component",
                                     "componentName": "browserView",
                                     "componentState": {
-                                        "label": "A",
-                                        "title": "component_A",
-                                        "identity": {
-                                            "uuid": "whatever",
-                                            "name": "component_A"
-                                        },
-                                        "url": "https://bing.com"
-                                    }
-                                },
-                                {
-                                    "type": "component",
-                                    "componentName": "browserView",
-                                    "componentState": {
                                         "label": "D",
                                         "title": "component_D",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_D"
                                         },
                                         "url": "https://wikipedia.org"
@@ -79,7 +67,7 @@
                                         "label": "E",
                                         "title": "component_E",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_E"
                                         },
                                         "url": "https://atom.finance"
@@ -93,7 +81,7 @@
         }
     },
     "runtime": {
-        "arguments": "--v-1",
+        "arguments": "--v-1 --inspect",
         "version": "13.76.44.5"
     },
     "shortcut": {
