@@ -8,6 +8,13 @@
         "saveWindowState": true,
         "waitForPageLoad": false,
         "customData": {
+            "settings": {        
+                "popoutWholeStack": false,
+                "constrainDragToContainer": true,
+                "showPopoutIcon": false,
+                "showMaximiseIcon": false,
+                "showCloseIcon": false
+            },
             "content": [
                 {
                     "type": "row",
@@ -22,7 +29,7 @@
                                         "label": "B",
                                         "title": "component_B",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_B"
                                         },
                                         "url": "https://duckduckgo.com"
@@ -35,7 +42,7 @@
                                         "label": "C",
                                         "title": "component_C",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_C"
                                         },
                                         "url": "https://apple.com"
@@ -53,7 +60,7 @@
                                         "label": "A",
                                         "title": "component_A",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_A"
                                         },
                                         "url": "https://bing.com"
@@ -66,7 +73,7 @@
                                         "label": "D",
                                         "title": "component_D",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_D"
                                         },
                                         "url": "https://wikipedia.org"
@@ -79,7 +86,7 @@
                                         "label": "E",
                                         "title": "component_E",
                                         "identity": {
-                                            "uuid": "whatever",
+                                            "uuid": "OpenfinPOC",
                                             "name": "component_E"
                                         },
                                         "url": "https://atom.finance"
@@ -93,8 +100,8 @@
         }
     },
     "runtime": {
-        "arguments": "--v-1",
-        "version": "13.76.44.5"
+        "arguments": "--v-1 --inspect",
+        "version": "13.76.44.6"
     },
     "shortcut": {
         "company": "OpenFin",

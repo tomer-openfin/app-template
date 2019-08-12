@@ -56,8 +56,8 @@ class goldenLayouts extends HTMLElement {
     onTabCreated(tab) {
         this.isDragging = false;
         const dragListener = tab._dragListener;
-        const id = tab.contentItem.config.componentState.identity.name;
-        const popoutButton = $(`<div class="popout-button" id="popout-${id}"></div>`);
+        const identity = tab.contentItem.config.componentState.identity;
+        const popoutButton = $(`<div class="popout-button" id="popout-${identity.id}"></div>`);
         popoutButton.append(popoutIcon.clone());
         popoutButton.click(async () => {
             const view = tab.contentItem.container.getState().identity;
@@ -66,7 +66,7 @@ class goldenLayouts extends HTMLElement {
             tab.contentItem.container.close(view);
         });
         tab.element.append(popoutButton);
-        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener));
+        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener, identity));
     }
 
     onItemDestroyed(e) {
@@ -80,18 +80,20 @@ class goldenLayouts extends HTMLElement {
             }
         }, 0);
     }
-    onTabDrag(dragListener) {
+    onTabDrag(dragListener, tabIdentity) {
         if(!this.isDragging) {
             this.isDragging = true;
 
-            const Allviews = this.layout.root.getComponentsByName('browserView').map(item => item.container.getState().identity);
-
-            Allviews.forEach(view => fin.BrowserView.wrapSync(view).hide());
-            dragListener.on('dragStop', function onDragEnd(e) {
+            const allViews = this.layout.root.getComponentsByName('browserView').map(item => item.container.getState().identity);
+            allViews.push(tabIdentity); // we have to add currently dragged tab manualy since it's not in the DOM atm
+            allViews.forEach(view => fin.BrowserView.wrapSync(view).hide());
+            const onDragEnd = (e) => {
                 this.isDragging = false;
-                Allviews.forEach(view => fin.BrowserView.wrapSync(view).show());
+                allViews.forEach(view => fin.BrowserView.wrapSync(view).show());
                 dragListener.off('dragStop', onDragEnd);
-            });
+                this.updateViewTitles();
+            }
+            dragListener.on('dragStop', onDragEnd);
         }
     }
     attachViews() {
@@ -115,6 +117,7 @@ class goldenLayouts extends HTMLElement {
 
         this.layout.init();
         this.attachViews();
+        this.updateViewTitles();
 
         const win = fin.Window.getCurrentSync();
 
@@ -133,12 +136,37 @@ class goldenLayouts extends HTMLElement {
         // render(info, this);
     }
 
+    async updateViewTitles() {
+        const allViewWrappers = this.layout.root.getComponentsByName('browserView');
+        const allViewIdentities = allViewWrappers.map(item => item.container.getState().identity);
+        const allViews = allViewIdentities.map(fin.BrowserView.wrapSync.bind(fin));
+        allViews.forEach(async view => {
+            const {title} = await view.getInfo();
+            const [item] = this.findViewWrapper(view.identity)
+            if(!title || !item) console.err(`couldn't update view's title. view: ${JSON.stringify(view)}. title: ${title}. dom elem: ${item}`)
+            else { 
+                item.container.setTitle(title);
+                item.container.getElement()[0].innerHTML = `<div class="wrapper_title">${title}</div>`
+            }
+        });
+    }
+
     async save() {
         if (this.layout) {
-            const state = JSON.stringify(this.layout.toConfig());
+            const config = this.layout.toConfig();
+            if(!config.content || !config.content.length) return;
+            const state = JSON.stringify(config);
             localStorage.setItem(this.getStorageKey(), state);
             console.log('Layout state saved');
         }
+    }
+
+    findViewWrapper ({name, uuid}) {
+        return this.layout.root.getComponentsByName('browserView')
+            .filter( wrapper => 
+                wrapper.componentState.identity.name === name &&
+                wrapper.componentState.identity.uuid === uuid
+            )
     }
 
     //TODO: figure out how to iterate over a saved layout to get the browser view information.
