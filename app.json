@@ -7,6 +7,8 @@
         "autoShow": true,
         "saveWindowState": true,
         "waitForPageLoad": false,
+        "defaultWidth": 700,
+        "defaultHeight": 900,
         "customData": {
             "content": [
                 {
@@ -19,10 +21,7 @@
                                     "type": "component",
                                     "componentName": "browserView",
                                     "componentState": {
-                                        "label": "B",
-                                        "title": "component_B",
                                         "identity": {
-                                            "uuid": "OpenfinPOC",
                                             "name": "component_B"
                                         },
                                         "showDevTools": true,
@@ -33,10 +32,7 @@
                                     "type": "component",
                                     "componentName": "browserView",
                                     "componentState": {
-                                        "label": "C",
-                                        "title": "component_C",
                                         "identity": {
-                                            "uuid": "OpenfinPOC",
                                             "name": "component_C"
                                         },
                                         "url": "https://apple.com"
@@ -51,10 +47,7 @@
                                     "type": "component",
                                     "componentName": "browserView",
                                     "componentState": {
-                                        "label": "D",
-                                        "title": "component_D",
                                         "identity": {
-                                            "uuid": "OpenfinPOC",
                                             "name": "component_D"
                                         },
                                         "url": "https://wikipedia.org"
@@ -64,10 +57,7 @@
                                     "type": "component",
                                     "componentName": "browserView",
                                     "componentState": {
-                                        "label": "E",
-                                        "title": "component_E",
                                         "identity": {
-                                            "uuid": "OpenfinPOC",
                                             "name": "component_E"
                                         },
                                         "url": "https://atom.finance"
@@ -89,5 +79,11 @@
         "description": "Openfin POC",
         "icon": "http://localhost:5555/favicon.ico",
         "name": "Openfin POC"
-    }
+    },
+    "services": [
+        {
+            "name": "layouts",
+            "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.json"
+        }
+    ]
 }
