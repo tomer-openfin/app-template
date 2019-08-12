@@ -8,6 +8,13 @@
         "saveWindowState": true,
         "waitForPageLoad": false,
         "customData": {
+            "settings": {        
+                "popoutWholeStack": false,
+                "constrainDragToContainer": true,
+                "showPopoutIcon": false,
+                "showMaximiseIcon": false,
+                "showCloseIcon": false
+            },
             "content": [
                 {
                     "type": "row",
