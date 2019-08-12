@@ -8,13 +8,6 @@
         "saveWindowState": true,
         "waitForPageLoad": false,
         "customData": {
-            "settings": {        
-                "popoutWholeStack": false,
-                "constrainDragToContainer": true,
-                "showPopoutIcon": false,
-                "showMaximiseIcon": false,
-                "showCloseIcon": false
-            },
             "content": [
                 {
                     "type": "row",
@@ -32,7 +25,8 @@
                                             "uuid": "OpenfinPOC",
                                             "name": "component_B"
                                         },
-                                        "url": "https://duckduckgo.com"
+                                        "showDevTools": true,
+                                        "url": "http://localhost:5555/view-form.html"
                                     }
                                 },
                                 {
@@ -53,19 +47,6 @@
                         {
                             "type": "column",
                             "content": [
-                                {
-                                    "type": "component",
-                                    "componentName": "browserView",
-                                    "componentState": {
-                                        "label": "A",
-                                        "title": "component_A",
-                                        "identity": {
-                                            "uuid": "OpenfinPOC",
-                                            "name": "component_A"
-                                        },
-                                        "url": "https://bing.com"
-                                    }
-                                },
                                 {
                                     "type": "component",
                                     "componentName": "browserView",
