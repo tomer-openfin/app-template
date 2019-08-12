@@ -1,29 +1,8 @@
 import { html, render } from '../node_modules/lit-html/lit-html.js';
-import {defaultConfig, popoutIcon} from './constants.js';
+import { popoutIcon} from './constants.js';
 import WindowWithViews from '../public/js/window.js';
 //register service worker
 //navigator.serviceWorker.register('../serviceworker.js');
-
-//Golden layout stuff:
-
-// var myLayout = new GoldenLayout( config );
-
-// myLayout.registerComponent( 'testComponent', function( container, componentState ){
-//     container.getElement().html( '<h2>' + componentState.label + '</h2>' );
-// });
-
-// myLayout.init();
-
-// try {
-//     myLayout.on('stateChanged', console.log);
-// } catch (err) {
-//     console.error(err);
-// }
-
-// console.table( myLayout.toConfig());
-
-// window.myLayout = myLayout;
-//End golden layout stuff
 
 class openfinInfo extends HTMLElement {
     constructor() {
@@ -54,20 +33,10 @@ class goldenLayouts extends HTMLElement {
         this.restore = this.restore.bind(this);
         this.restoreDefault = this.restoreDefault.bind(this);
         this.getStorageKey = this.getStorageKey.bind(this);
+        this.getDefaultConfig = this.getDefaultConfig.bind(this);
         this.layout = null;
         this.isDragging = false;
 
-        this.defaultConfig = defaultConfig;
-
-        //Restore the layout.
-        this.restore();
-
-        this.setupListeners();
-
-        this.layout.init();
-        this.attachViews();
-
-        //Then we render.
         this.render();
     }
 
@@ -90,13 +59,14 @@ class goldenLayouts extends HTMLElement {
         const id = tab.contentItem.config.componentState.identity.name;
         const popoutButton = $(`<div class="popout-button" id="popout-${id}"></div>`);
         popoutButton.append(popoutIcon.clone());
-        popoutButton.click(() => {
+        popoutButton.click(async () => {
             const view = tab.contentItem.container.getState().identity;
+            const defaultConfig = await this.getDefaultConfig();
             new WindowWithViews(defaultConfig, [view]);
             tab.contentItem.container.close(view);
         });
         tab.element.append(popoutButton);
-        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener))
+        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener));
     }
 
     onItemDestroyed(e) {
@@ -131,7 +101,28 @@ class goldenLayouts extends HTMLElement {
             rView.renderIntoComponent(bv);
         });
     }
+
+    async getDefaultConfig() {
+        const { customData } = await fin.Window.getCurrentSync().getOptions();
+        return customData;
+    }
+
     async render() {
+        //Restore the layout.
+        await this.restore();
+
+        this.setupListeners();
+
+        this.layout.init();
+        this.attachViews();
+
+        const win = fin.Window.getCurrentSync();
+
+        win.on('close-requested', async () => {
+            await this.save();
+            await win.close(true);
+        });
+        //Then we render.
         // const info = html`
         // <div>
         //     <button @click=${this.save}>Save Layout</button>
@@ -151,7 +142,7 @@ class goldenLayouts extends HTMLElement {
     }
 
     //TODO: figure out how to iterate over a saved layout to get the browser view information.
-    restore() {
+    async restore() {
         const savedState = localStorage.getItem(this.getStorageKey());
 
         if (this.layout) {
@@ -161,7 +152,8 @@ class goldenLayouts extends HTMLElement {
         if (savedState !== null) {
             this.layout = new GoldenLayout(JSON.parse(savedState));
         } else {
-            this.layout = new GoldenLayout(this.defaultConfig);
+            const { customData } = await fin.Window.getCurrentSync().getOptions();
+            this.layout = new GoldenLayout(customData);
         }
 
 

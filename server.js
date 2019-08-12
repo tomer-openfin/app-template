@@ -6,7 +6,8 @@ const serverParams = {
     root: path.resolve('./'),
     port: 5555,
     open: false,
-    logLevel: 2
+    logLevel: 2,
+    cache: -1
 };
 
 //To Launch the OpenFin Application we need a manifestUrl.
