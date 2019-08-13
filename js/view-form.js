@@ -7,7 +7,7 @@ class viewForm extends HTMLElement {
         this.createView = this.createView.bind(this);
         this.generateDefaultConfig = this.generateDefaultConfig.bind(this);
         this.handleInput = this.handleInput.bind(this);
-
+        this.window = fin.Window.getCurrentSync();
         this.render();
     }
 
@@ -77,7 +77,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
+                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`,
+                                uuid: this.window.identity.uuid
                             },
                             url: this.url1
                         }
@@ -86,7 +87,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-                                name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`
+                                name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`,
+                                uuid: this.window.identity.uuid
                             },
                             url: this.url2
                         }
@@ -98,7 +100,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
+                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`,
+                                uuid: this.window.identity.uuid
                             },
                             url: this.url3
                         }
@@ -107,7 +110,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-                                name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`
+                                name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`,
+                                uuid: this.window.identity.uuid
                             },
                             url: this.url4
                         }

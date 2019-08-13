@@ -29,7 +29,8 @@
                                     "componentName": "browserView",
                                     "componentState": {
                                         "identity": {
-                                            "name": "component_B"
+                                            "name": "component_B",
+                                            "uuid": "OpenfinPOC"
                                         },
                                         "showDevTools": true,
                                         "url": "http://localhost:5555/view-form.html"
@@ -40,7 +41,8 @@
                                     "componentName": "browserView",
                                     "componentState": {
                                         "identity": {
-                                            "name": "component_C"
+                                            "name": "component_C",
+                                            "uuid": "OpenfinPOC"
                                         },
                                         "url": "https://apple.com"
                                     }
@@ -55,7 +57,8 @@
                                     "componentName": "browserView",
                                     "componentState": {
                                         "identity": {
-                                            "name": "component_D"
+                                            "name": "component_D",
+                                            "uuid": "OpenfinPOC"
                                         },
                                         "url": "https://wikipedia.org"
                                     }
@@ -65,7 +68,8 @@
                                     "componentName": "browserView",
                                     "componentState": {
                                         "identity": {
-                                            "name": "component_E"
+                                            "name": "component_E",
+                                            "uuid": "OpenfinPOC"
                                         },
                                         "url": "https://atom.finance"
                                     }
