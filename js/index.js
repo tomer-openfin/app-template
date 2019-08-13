@@ -15,25 +15,17 @@
 
 
     fin.desktop.InterApplicationBus.subscribe('*', 'create-view', (options) => {
-        console.log('got it', options);
         const winOption = {
-            name:'child_3334',
-            defaultWidth: 300,
-            defaultHeight: 300,
+            name: `child-window-${Date.now()}`,
+            defaultWidth: 700,
+            defaultHeight: 900,
             url: 'http://localhost:5555/view-container.html',
             frame: true,
             autoShow: true,
             customData: options
         };
 
-        //fin.Window.create(winOption).then(() => console.log('created a child window')).catch(console.error);
-        var win = new fin.desktop.Window(winOption,
-            function() {
-                win.show();
-            },
-            function(error) {
-                console.log("Error creating window:", error);
-            }
-        );
+        fin.Window.create(winOption).then(() => console.log('created a child window')).catch(console.error);
+
     });
 })();
