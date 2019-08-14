@@ -56,9 +56,16 @@ class viewForm extends HTMLElement {
     }
 
     async createView() {
-        const config = this.generateDefaultConfig();
-        console.log(config);
-        fin.InterApplicationBus.send({uuid:'OpenfinPOC', name:'OpenfinPOC'}, 'create-view', config);
+        const createViewPayload = {
+            options: {
+                defaultWidth: 700,
+                defaultHeight: 900,
+                name: `child-window-${Date.now()}`
+            },
+            layoutConfig: this.generateDefaultConfig()
+        };
+
+        fin.InterApplicationBus.send({uuid:'OpenfinPOC', name:'OpenfinPOC'}, 'create-view', createViewPayload);
     }
 
     handleInput(e) {
@@ -67,6 +74,8 @@ class viewForm extends HTMLElement {
     }
 
     generateDefaultConfig() {
+        const {identity: { uuid } }  = fin.Application.getCurrentSync();
+
         return {
             content: [{
                 type: 'row',
@@ -77,6 +86,7 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
+                                uuid,
                                 name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
                             },
                             url: this.url1
@@ -86,6 +96,7 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
+                                uuid,
                                 name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`
                             },
                             url: this.url2
@@ -98,6 +109,7 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
+                                uuid,
                                 name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
                             },
                             url: this.url3
@@ -107,6 +119,7 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
+                                uuid,
                                 name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`
                             },
                             url: this.url4
