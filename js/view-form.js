@@ -86,13 +86,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-<<<<<<< HEAD
-                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`,
-                                uuid: this.window.identity.uuid
-=======
                                 uuid,
                                 name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
->>>>>>> ricardo/feature/golden_restore
                             },
                             url: this.url1
                         }
@@ -101,13 +96,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-<<<<<<< HEAD
-                                name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`,
-                                uuid: this.window.identity.uuid
-=======
                                 uuid,
                                 name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`
->>>>>>> ricardo/feature/golden_restore
                             },
                             url: this.url2
                         }
@@ -119,13 +109,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-<<<<<<< HEAD
-                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`,
-                                uuid: this.window.identity.uuid
-=======
                                 uuid,
                                 name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
->>>>>>> ricardo/feature/golden_restore
                             },
                             url: this.url3
                         }
@@ -134,13 +119,8 @@ class viewForm extends HTMLElement {
                         componentName: 'browserView',
                         componentState: {
                             identity: {
-<<<<<<< HEAD
-                                name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`,
-                                uuid: this.window.identity.uuid
-=======
                                 uuid,
                                 name: `component_${Date.now() + Math.floor(Math.random() * 10000)}`
->>>>>>> ricardo/feature/golden_restore
                             },
                             url: this.url4
                         }
