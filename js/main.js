@@ -47,9 +47,15 @@ class goldenLayouts extends HTMLElement {
     }
 
     setupListeners() {
+        const win = fin.Window.getCurrentSync();
         this.layout.on('stackCreated', this.onStackCreated.bind(this));
         this.layout.on('tabCreated', this.onTabCreated.bind(this));
         this.layout.on('itemDestroyed', this.onItemDestroyed.bind(this));
+        win.on('minimized', () => {
+            win.once('restored', () => {
+                // this.layout.updateSize(); todo: fix.
+            })
+        })
     }
 
     onStackCreated() {/*todo*/}
@@ -57,16 +63,24 @@ class goldenLayouts extends HTMLElement {
         this.isDragging = false;
         const dragListener = tab._dragListener;
         const identity = tab.contentItem.config.componentState.identity;
-        const popoutButton = $(`<div class="popout-button" id="popout-${identity.id}"></div>`);
-        popoutButton.append(popoutIcon.clone());
-        popoutButton.click(async () => {
+
+        this.injectPopoutButton(tab);
+        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener, identity));
+    }
+
+    injectPopoutButton(tab) {
+        const onPopooutButtonClick = async () => {
             const view = tab.contentItem.container.getState().identity;
             const defaultConfig = await this.getDefaultConfig();
             new WindowWithViews(defaultConfig, [view]);
             tab.contentItem.container.close(view);
-        });
-        tab.element.append(popoutButton);
-        dragListener.on('drag', this.onTabDrag.bind(this, tab._dragListener, identity));
+        };
+        const popoutButton = html`<div @click=${onPopooutButtonClick}>${popoutIcon}</div>`;
+        const closeButton = tab.element[0].getElementsByClassName("lm_close_tab")[0];
+        const wrapper = document.createElement('div');
+        wrapper.className = 'popout-button';
+        render(popoutButton, wrapper);
+        tab.element[0].insertBefore(wrapper, closeButton);
     }
 
     onItemDestroyed(e) {

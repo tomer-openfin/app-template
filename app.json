@@ -4,7 +4,7 @@
         "url": "http://localhost:5555/index.html",
         "uuid": "OpenfinPOC",
         "applicationIcon": "http://localhost:5555/favicon.ico",
-        "autoShow": true,
+        "autoShow": false,
         "saveWindowState": true,
         "waitForPageLoad": false,
         "defaultWidth": 700,
