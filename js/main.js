@@ -114,10 +114,8 @@ class goldenLayouts extends HTMLElement {
         await this.restore();
 
         this.setupListeners();
-
+        this.layout.on('initialised', this.initializeViews.bind(this))
         this.layout.init();
-        this.attachViews();
-        this.updateViewTitles();
 
         const win = fin.Window.getCurrentSync();
 
@@ -136,6 +134,11 @@ class goldenLayouts extends HTMLElement {
         // render(info, this);
     }
 
+    initializeViews() {
+        this.attachViews();
+        this.updateViewTitles();
+    }
+
     async updateViewTitles() {
         const allViewWrappers = this.layout.root.getComponentsByName('browserView');
         const allViewIdentities = allViewWrappers.map(item => item.container.getState().identity);
@@ -143,7 +146,7 @@ class goldenLayouts extends HTMLElement {
         allViews.forEach(async view => {
             const {title} = await view.getInfo();
             const [item] = this.findViewWrapper(view.identity)
-            if(!title || !item) console.err(`couldn't update view's title. view: ${JSON.stringify(view)}. title: ${title}. dom elem: ${item}`)
+            if(!title || !item) console.error(`couldn't update view's title. view: ${JSON.stringify(view)}. title: ${title}. dom elem: ${item}`)
             else { 
                 item.container.setTitle(title);
                 item.container.getElement()[0].innerHTML = `<div class="wrapper_title">${title}</div>`
