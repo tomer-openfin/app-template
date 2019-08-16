@@ -34,15 +34,49 @@ class goldenLayouts extends HTMLElement {
         this.restoreDefault = this.restoreDefault.bind(this);
         this.getStorageKey = this.getStorageKey.bind(this);
         this.getDefaultConfig = this.getDefaultConfig.bind(this);
+        this.createChannelConnections = this.createChannelConnections.bind(this);
         this.layout = null;
         this.isDragging = false;
 
+        this.createChannelConnections();
         this.render();
+    }
+
+    //TODO: get better names around this.
+    async createChannelConnections () {
+        //TODO: this could be shared logic somewhere.
+        const { identity } = fin.Window.getCurrentSync();
+        const channelName = `${identity.uuid}-${identity.name}-custom-frame`;
+        this.provider = await fin.InterApplicationBus.Channel.create(channelName);
+        this.client = await fin.InterApplicationBus.Channel.connect('custom-frame', { payload: { channelName } });
+
+        //TODO: reusing the same name is al sorts of wrong for this thing...do something else.
+        this.provider.register('add-view', async ({ viewOptions }) => {
+
+            const content = {
+                type: 'component',
+                componentName: 'browserView',
+                componentState: viewOptions
+            };
+
+            console.log('adding stuf');
+            console.log(this.layout.root.contentItems[ 0 ].addChild(content));
+
+
+            this.layout.root.getComponentsByName('browserView').forEach(bv => {
+                if (bv.componentState.identity.name === viewOptions.identity.name) {
+                    const rView = new ResizableView(bv.componentState);
+                    rView.renderIntoComponent(bv);
+                }
+
+            });
+
+            return;
+        });
     }
 
     getStorageKey() {
         const identity = fin.Window.getCurrentSync().identity;
-
         return encodeURI(`${identity.uuid}-${identity.name}-of-gl-state`);
     }
 
@@ -52,7 +86,11 @@ class goldenLayouts extends HTMLElement {
         this.layout.on('itemDestroyed', this.onItemDestroyed.bind(this));
     }
 
-    onStackCreated() {/*todo*/}
+    onStackCreated(a, b, c) {
+        console.log('onStackcreated', a, b, c);
+
+        //new WindowWithViews(a.config.content[0], a.element[0]);
+    }
     onTabCreated(tab) {
         this.isDragging = false;
         const dragListener = tab._dragListener;

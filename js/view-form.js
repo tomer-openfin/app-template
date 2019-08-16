@@ -6,9 +6,18 @@ class viewForm extends HTMLElement {
         this.render = this.render.bind(this);
         this.createView = this.createView.bind(this);
         this.generateDefaultConfig = this.generateDefaultConfig.bind(this);
+        this.addToView = this.addToView.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.channelConnect = this.channelConnect.bind(this);
 
+        //this could be done better.
+        fin.Application.getCurrentSync().on('window-created', this.render);
+        this.channelConnect();
         this.render();
+    }
+
+    async channelConnect() {
+        this.client = await fin.InterApplicationBus.Channel.connect('custom-frame');
     }
 
     async render() {
@@ -16,7 +25,12 @@ class viewForm extends HTMLElement {
         this.url2 = 'https://lit-html.polymer-project.org/';
         this.url3 = 'https://developer.mozilla.org/en-US/';
         this.url4 = 'https://cdn.openfin.co/docs/javascript/13.76.44.7/';
+        this.urlToAdd = 'https://cdn.openfin.co/docs/javascript/13.76.44.7/';
 
+        //Hard coded code here, caution:
+        const app = fin.Application.getCurrentSync();
+        const wins = await app.getChildWindows();
+        this.selectedWindow = wins[0].identity.name;
         const vForm = html`
         <div>
             <fieldset>
@@ -51,8 +65,38 @@ class viewForm extends HTMLElement {
                     @input=${this.handleInput}
                 />
             </fieldset>
+            <fieldset>
+                <legend>Add view to window</legend>
+                <button @click=${this.addToView}>Add</button> <br>
+               <input
+                    type="text"
+                    id="urlToAdd"
+                    size="50"
+                    .value="${this.urlToAdd}"
+                     @input=${this.handleInput}"
+                /> <br>
+                <select id="pet-select" @change=${(e) => this.selectedWindow = e.srcElement.value}>
+                    ${wins.map((win) => html`<option value="${win.identity.name}">${win.identity.name}</option>`)}
+                </select>
+             </fieldset>
         </div>`;
         render(vForm, this);
+    }
+
+    async addToView() {
+        const {identity: { uuid } }  = fin.Application.getCurrentSync();
+        const target = { uuid, name: this.selectedWindow };
+        await this.client.dispatch('add-view', {
+            target,
+            viewOptions: {
+            identity: {
+                uuid,
+                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
+            },
+            url: this.urlToAdd
+        }});
+
+        console.log(this.selectedWindow, this.urlToAdd);
     }
 
     async createView() {
@@ -64,8 +108,11 @@ class viewForm extends HTMLElement {
             },
             layoutConfig: this.generateDefaultConfig()
         };
-
-        fin.InterApplicationBus.send({uuid:'OpenfinPOC', name:'OpenfinPOC'}, 'create-view', createViewPayload);
+        try {
+             await this.client.dispatch('create-view', createViewPayload);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     handleInput(e) {
