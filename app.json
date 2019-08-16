@@ -9,8 +9,12 @@
         "waitForPageLoad": false,
         "defaultWidth": 700,
         "defaultHeight": 900,
+        "resizeRegion": {
+            "bottomRightCorner": 15,
+            "size": 15
+        },
         "customData": {
-            "settings": {        
+            "settings": {
                 "popoutWholeStack": false,
                 "constrainDragToContainer": true,
                 "showPopoutIcon": false,
@@ -83,7 +87,7 @@
     },
     "runtime": {
         "arguments": "--v-1 --inspect",
-        "version": "13.76.44.6"
+        "version": "13.76.44.5"
     },
     "shortcut": {
         "company": "OpenFin",

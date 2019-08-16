@@ -3,8 +3,8 @@
     const { customData } = await fin.Window.getCurrentSync().getOptions();
         const winOption = {
             name:'child',
-            defaultWidth: 300,
-            defaultHeight: 300,
+            defaultWidth: 700,
+            defaultHeight: 900,
             url: 'http://localhost:5555/view-container.html',
             frame: false,
             autoShow: true,
