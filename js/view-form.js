@@ -7,7 +7,7 @@ class viewForm extends HTMLElement {
         this.createView = this.createView.bind(this);
         this.generateDefaultConfig = this.generateDefaultConfig.bind(this);
         this.handleInput = this.handleInput.bind(this);
-
+        this.window = fin.Window.getCurrentSync();
         this.render();
     }
 

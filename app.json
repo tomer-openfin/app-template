@@ -4,12 +4,19 @@
         "url": "http://localhost:5555/index.html",
         "uuid": "OpenfinPOC",
         "applicationIcon": "http://localhost:5555/favicon.ico",
-        "autoShow": true,
+        "autoShow": false,
         "saveWindowState": true,
         "waitForPageLoad": false,
         "defaultWidth": 700,
         "defaultHeight": 900,
         "customData": {
+            "settings": {        
+                "popoutWholeStack": false,
+                "constrainDragToContainer": true,
+                "showPopoutIcon": false,
+                "showMaximiseIcon": false,
+                "showCloseIcon": false
+            },
             "content": [
                 {
                     "type": "row",
@@ -76,7 +83,7 @@
     },
     "runtime": {
         "arguments": "--v-1 --inspect",
-        "version": "13.76.44.5"
+        "version": "13.76.44.6"
     },
     "shortcut": {
         "company": "OpenFin",

@@ -12,11 +12,12 @@
 <body>
     <div>
         <!-- <openfin-info></openfin-info> -->
+        <openfin-frame></openfin-frame>
         <openfin-golden-layouts></openfin-golden-layouts>
     </div>
     <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/popoutButton.js"></script>
     <script type="module" src="js/constants.js"></script>
+    <script type="module" src="js/frame.js"></script>
     <script type="module" src="public/js/window.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
     </script>
@@ -33,10 +34,37 @@
             color: #fff;
             font-weight: bold;
             z-index: 9999;
-            padding: 0px 0px 0px 5px;
+            padding: 0px 0px 0px 15px;
             width: 15px;
             margin: 0px auto;
             display: inline-block;
+    }
+    
+    div.wrapper_title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3vw;
+        opacity: 0.3;
+        color: white;
+    }
+    div.container {
+        -webkit-app-region: drag;
+        background: #000000;
+    }
+    div.button {
+        float: right;
+        position: relative;
+        padding: 2px 0px;
+        -webkit-app-region: none;
+    }
+    div.button:hover {
+        cursor: pointer;
+    }
+
+    div.buttonsWrapper {
+        height: 28px
     }
 </style>
 </html>

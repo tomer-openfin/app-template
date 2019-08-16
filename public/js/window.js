@@ -1,5 +1,6 @@
+let idCounter = 0; //hack
+
 export default class WindowWithViews {
-    idCounter = 0; //hack
 
     constructor(config, views) { 
         const configWithDefaults = Object.assign({}, this.genDefaultConfig(), config);
@@ -22,8 +23,8 @@ export default class WindowWithViews {
         "waitForPageLoad": false
       });
       
-      genId = () => `OpenfinPOC${this.idCounter++}`
-
+    genId = () => `OpenfinPOC${idCounter++}`
+    
 }
 
 const goldenLayoutsConfig = {
