@@ -8,6 +8,7 @@ class viewForm extends HTMLElement {
         this.generateDefaultConfig = this.generateDefaultConfig.bind(this);
         this.addToView = this.addToView.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.window = fin.Window.getCurrentSync();
         this.channelConnect = this.channelConnect.bind(this);
 
         //this could be done better.

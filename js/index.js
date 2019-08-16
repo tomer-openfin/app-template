@@ -6,7 +6,7 @@
             defaultWidth: 300,
             defaultHeight: 300,
             url: 'http://localhost:5555/view-container.html',
-            frame: true,
+            frame: false,
             autoShow: true,
             customData
         };
@@ -21,7 +21,7 @@
     provider.register('create-view', async({ options, layoutConfig}, identity) => {
         const winOption = Object.assign({
             url: 'http://localhost:5555/view-container.html',
-            frame: true,
+            frame: false,
             autoShow: true,
             customData: layoutConfig
         }, options);
