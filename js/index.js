@@ -1,4 +1,14 @@
 (async () => {
+
+    const app = fin.Application.getCurrentSync();
+
+    await app.on('window-closed', async () => {
+        const childWindows = await app.getChildWindows();
+        if (childWindows.length < 1) {
+            app.close();
+        }
+    });
+
     //Create "main" window
     const { customData } = await fin.Window.getCurrentSync().getOptions();
         const winOption = {
