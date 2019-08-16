@@ -22,7 +22,6 @@ class viewForm extends HTMLElement {
     }
 
     async render() {
-        this.url1 = 'http://localhost:5555/view-form.html';
         this.url2 = 'https://lit-html.polymer-project.org/';
         this.url3 = 'https://developer.mozilla.org/en-US/';
         this.url4 = 'https://cdn.openfin.co/docs/javascript/13.76.44.7/';
@@ -37,13 +36,6 @@ class viewForm extends HTMLElement {
             <fieldset>
                 <legend>Create a new View</legend>
                 <button @click=${this.createView}>Create</button> <br>
-                <input
-                    type="text"
-                    id="url1"
-                    .value=${this.url1}
-                    size="50"
-                    @input=${this.handleInput}
-                /> <br>
                 <input
                     type="text"
                     id="url1"
@@ -130,16 +122,6 @@ class viewForm extends HTMLElement {
                 content:[{
                     type: 'column',
                     content:[{
-                        type: 'component',
-                        componentName: 'browserView',
-                        componentState: {
-                            identity: {
-                                uuid,
-                                name: `component_${Date.now() +  Math.floor(Math.random() * 10000)}`
-                            },
-                            url: this.url1
-                        }
-                    },{
                         type: 'component',
                         componentName: 'browserView',
                         componentState: {
