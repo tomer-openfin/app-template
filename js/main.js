@@ -191,9 +191,13 @@ class goldenLayouts extends HTMLElement {
         if(document.readyState === 'complete') {
             this.layout.init();
         } else {
-            window.addEventListener('DOMContentLoaded', (event) => {
-                this.layout.init();
-            });
+            const handler = event => {
+                if (event.target.readyState === 'complete') {
+                    this.layout.init();
+                    window.removeEventListener(handler);
+                }
+            }
+            window.addEventListener('readystatechange', handler);
         }
     }
 
