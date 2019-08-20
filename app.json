@@ -98,7 +98,15 @@
     "services": [
         {
             "name": "layouts",
-            "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.json"
+            "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.json",
+            "config": {
+
+                "features": {
+
+                    "tab": false
+
+                }
+            }
         }
     ]
 }

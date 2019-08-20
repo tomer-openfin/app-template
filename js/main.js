@@ -1,5 +1,5 @@
 import { html, render } from '../node_modules/lit-html/lit-html.js';
-import { popoutIcon} from './constants.js';
+import { popoutIcon } from './constants.js';
 import WindowWithViews from '../public/js/window.js';
 //register service worker
 //navigator.serviceWorker.register('../serviceworker.js');
@@ -47,11 +47,10 @@ class goldenLayouts extends HTMLElement {
         //TODO: this could be shared logic somewhere.
         const { identity } = fin.Window.getCurrentSync();
         const channelName = `${identity.uuid}-${identity.name}-custom-frame`;
-        this.provider = await fin.InterApplicationBus.Channel.create(channelName);
-        this.client = await fin.InterApplicationBus.Channel.connect('custom-frame', { payload: { channelName } });
+        this.client = await fin.InterApplicationBus.Channel.connect('custom-frame', { payload: { frameView: true } });
 
         //TODO: reusing the same name is al sorts of wrong for this thing...do something else.
-        this.provider.register('add-view', async ({ viewOptions }) => {
+        this.client.register('add-view', async ({ viewOptions }) => {
 
             const content = {
                 type: 'component',
@@ -199,7 +198,7 @@ class goldenLayouts extends HTMLElement {
             const {title} = await view.getInfo();
             const [item] = this.findViewWrapper(view.identity)
             if(!title || !item) console.error(`couldn't update view's title. view: ${JSON.stringify(view)}. title: ${title}. dom elem: ${item}`)
-            else { 
+            else {
                 item.container.setTitle(title);
                 item.container.getElement()[0].innerHTML = `<div class="wrapper_title">${title}</div>`
             }
@@ -218,10 +217,10 @@ class goldenLayouts extends HTMLElement {
 
     findViewWrapper ({name, uuid}) {
         return this.layout.root.getComponentsByName('browserView')
-            .filter( wrapper => 
-                wrapper.componentState.identity.name === name &&
-                wrapper.componentState.identity.uuid === uuid
-            )
+            .filter( wrapper =>
+                     wrapper.componentState.identity.name === name &&
+                     wrapper.componentState.identity.uuid === uuid
+                   );
     }
 
     //TODO: figure out how to iterate over a saved layout to get the browser view information.
@@ -238,7 +237,6 @@ class goldenLayouts extends HTMLElement {
             const { customData } = await fin.Window.getCurrentSync().getOptions();
             this.layout = new GoldenLayout(customData);
         }
-
 
         //this.layout.
         this.layout.registerComponent( 'browserView', function( container, componentState ){
