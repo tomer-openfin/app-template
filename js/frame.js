@@ -25,7 +25,7 @@ export default class openfinFrame extends HTMLElement {
         <div class="container">
             <div class="buttonsWrapper">
                 ${this.closeButton}
-                ${this.minimizeButton}
+                <!-- ${this.minimizeButton} -->
                 ${this.maximizeButton}
             </div>
         </div>
