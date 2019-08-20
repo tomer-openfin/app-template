@@ -84,11 +84,12 @@ class goldenLayouts extends HTMLElement {
         this.layout.on('stackCreated', this.onStackCreated.bind(this));
         this.layout.on('tabCreated', this.onTabCreated.bind(this));
         this.layout.on('itemDestroyed', this.onItemDestroyed.bind(this));
+        this.layout.on('initialised', this.initializeViews.bind(this));
         win.on('minimized', () => {
             win.once('restored', () => {
                 // this.layout.updateSize(); todo: fix.
-            })
-        })
+            });
+        });
     }
 
     onStackCreated(a, b, c) {
@@ -161,10 +162,8 @@ class goldenLayouts extends HTMLElement {
     async render() {
         //Restore the layout.
         await this.restore();
-
         this.setupListeners();
-        this.layout.on('initialised', this.initializeViews.bind(this))
-        this.layout.init();
+        this.initLayoutWhenDOMReady()
 
         const win = fin.Window.getCurrentSync();
 
@@ -187,6 +186,17 @@ class goldenLayouts extends HTMLElement {
         this.attachViews();
         setInterval(this.updateViewTitles.bind(this), 500);
     }
+
+    initLayoutWhenDOMReady() {
+        if(document.readyState === 'complete') {
+            this.layout.init();
+        } else {
+            window.addEventListener('DOMContentLoaded', (event) => {
+                this.layout.init();
+            });
+        }
+    }
+
 
     async updateViewTitles() {
         const allViewWrappers = this.layout.root.getComponentsByName('browserView');
