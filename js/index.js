@@ -1,4 +1,14 @@
 (async () => {
+
+    const app = fin.Application.getCurrentSync();
+
+    await app.on('window-closed', async () => {
+        const childWindows = await app.getChildWindows();
+        if (childWindows.length < 1) {
+            app.close();
+        }
+    });
+
     //Create "main" window
     const { customData } = await fin.Window.getCurrentSync().getOptions();
         const winOption = {
@@ -8,7 +18,10 @@
             url: 'http://localhost:5555/view-container.html',
             frame: false,
             autoShow: true,
-            customData
+            customData,
+            "resizeRegion": {
+                "size": 7
+            }
         };
 
     await fin.Window.create(winOption);
@@ -32,9 +45,9 @@
     provider.onConnection(async (identity, payload) => {
         const channelName = `${identity.uuid}-${identity.name}-custom-frame`;
         console.log(payload);
-        if (payload && payload.channelName) {
-            const client = await fin.InterApplicationBus.Channel.connect(channelName);
-            clients.set(identity.name, client);
+        if (payload && payload.frameView) {
+
+            clients.set(identity.name, identity);
             console.log('initiated two way coms with a window');
         }
     });
@@ -44,7 +57,7 @@
         console.log(target);
         console.log(viewOptions);
         const client = clients.get(target.name);
-        return client.dispatch('add-view', { viewOptions });
+        return provider.dispatch(client, 'add-view', { viewOptions });
     });
 
 })();
