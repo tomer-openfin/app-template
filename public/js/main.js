@@ -16,7 +16,15 @@ async function init() {
 
     const ofVersion = document.querySelector('#of-version');
     ofVersion.innerText = await fin.System.getVersion();
-
+    let min = 1;
+    let max = 999999999999;
+    const genRand = () => {
+            return Math.random() * (max - min) + min;
+    }
+    let a = [];
+    while (a.length <max) {
+        a.push(genRand())
+    }
     //Only launch new windows from the main window.
     if (win.identity.name === app.identity.uuid) {
         //subscribing to the run-requested events will allow us to react to secondary launches, clicking on the icon once the Application is running for example.

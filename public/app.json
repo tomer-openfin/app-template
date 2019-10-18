@@ -1,21 +1,106 @@
 {
+    "devtools_port": 9090,
+    "licenseKey": "64605fac-add3-48a0-8710-64b38e96a2dd",
     "startup_app": {
-        "name": "OpenfinPOC",
-        "url": "http://localhost:5555/index.html",
-        "uuid": "OpenfinPOC",
-        "applicationIcon": "http://localhost:5555/favicon.ico",
+        "name": "OpenFin POC",
+        "description": "OpenFin POC",
+        "url": "https://google.com",
+        "uuid": "OpenFin POC",
         "autoShow": true,
-        "saveWindowState": false,
-        "customFrame": "http://127.0.0.1:5555/"
+        "standardFrame": true,
+        "layout": {
+            "windows": [
+                {
+                    "name": "window_A",
+                    "uuid": "OpenFin POC",
+                    "layoutConfig": {
+                        "settings": {
+                            "popoutWholeStack": false,
+                            "constrainDragToContainer": true,
+                            "showPopoutIcon": false,
+                            "showMaximiseIcon": false,
+                            "showCloseIcon": false
+                        },
+                        "content": [
+                            {
+                                "type": "stack",
+                                "id": "no-drop-target",
+                                "content": [
+                                    {
+                                        "type": "component",
+                                        "componentName": "browserView",
+                                        "componentState": {
+                                            "identity": {
+                                                "name": "component_A1",
+                                                "uuid": "OpenFin POC"
+                                            },
+                                            "url": "https://google.com"
+                                        }
+                                    },
+                                    {
+                                        "type": "component",
+                                        "componentName": "browserView",
+                                        "componentState": {
+                                            "identity": {
+                                                "name": "component_A2",
+                                                "uuid": "OpenFin POC"
+                                            },
+                                            "url": "https://yahoo.com"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "window_B",
+                    "uuid": "OpenFin POC",
+                    "layoutConfig": {
+                        "settings": {
+                            "popoutWholeStack": false,
+                            "constrainDragToContainer": true,
+                            "showPopoutIcon": false,
+                            "showMaximiseIcon": false,
+                            "showCloseIcon": false
+                        },
+                        "content": [
+                            {
+                                "type": "stack",
+                                "id": "no-drop-target",
+                                "content": [
+                                    {
+                                        "type": "component",
+                                        "componentName": "browserView",
+                                        "componentState": {
+                                            "identity": {
+                                                "name": "component_B1",
+                                                "uuid": "OpenFin POC"
+                                            },
+                                            "url": "https://openfin.co"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
     },
     "runtime": {
-        "arguments": "--inspect",
+        "arguments": "--v=1 --inspect --enable-mesh --enable-multi-runtime --enable-crash-reporting --no-sandbox",
         "version": "canary"
     },
+    "services": [
+        {
+            "_name": "layouts",
+            "_manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.staging.json"
+        }
+    ],
     "shortcut": {
         "company": "OpenFin",
         "description": "Openfin POC",
-        "icon": "http://localhost:5555/favicon.ico",
         "name": "Openfin POC"
     }
 }
