@@ -9,6 +9,7 @@
         "autoShow": true,
         "standardFrame": true,
         "layout": {
+            "controllerUrl": "http://192.168.2.6:9001/standard-frame-provider.html",
             "windows": [
                 {
                     "name": "window_A",
@@ -28,7 +29,7 @@
                                 "content": [
                                     {
                                         "type": "component",
-                                        "componentName": "browserView",
+                                        "componentName": "view",
                                         "componentState": {
                                             "identity": {
                                                 "name": "component_A1",
@@ -39,7 +40,7 @@
                                     },
                                     {
                                         "type": "component",
-                                        "componentName": "browserView",
+                                        "componentName": "view",
                                         "componentState": {
                                             "identity": {
                                                 "name": "component_A2",
@@ -71,7 +72,7 @@
                                 "content": [
                                     {
                                         "type": "component",
-                                        "componentName": "browserView",
+                                        "componentName": "view",
                                         "componentState": {
                                             "identity": {
                                                 "name": "component_B1",
